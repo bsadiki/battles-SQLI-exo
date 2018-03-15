@@ -13,14 +13,14 @@ public class Battle {
     private Team team1;
     private Team team2;
     private Team winningTeam;
-    public static boolean LOCALIZED_DAMAGES = true;
+    static boolean LOCALIZED_DAMAGES = true;
     private AttackingStrategy attackingStrategy;
 
-    public Battle(boolean localizedDamages) {
+    Battle(boolean localizedDamages) {
         attackingStrategy = new LocalizedAttackingStrategy();
     }
 
-    public Battle() {
+    Battle() {
         attackingStrategy = new GlobalAttackingStrategy();
     }
 
@@ -37,7 +37,7 @@ public class Battle {
         return this;
     }
 
-    void fight() {
+    private void fight() {
         while (this.team1.stillInCombat() && this.team2.stillInCombat()) {
             Double attack = attack(team1, Math.max((team1.numberOfShips() - team2.numberOfShips()), 0));
             Double counterAttack = attack(team2, Math.max((team2.numberOfShips() - team2.numberOfShips()), 0));
@@ -50,12 +50,12 @@ public class Battle {
             this.winningTeam = team2;
     }
 
-    Double attack(Team attackingTeam, int numberDifference) {
+    private Double attack(Team attackingTeam, int numberDifference) {
         Double bonus = numberDifference * .15;
         return attackingTeam.attack(bonus, this.attackingStrategy);
     }
 
-    void takeDamage(Team defendingTeam, Double damage) {
+    private void takeDamage(Team defendingTeam, Double damage) {
         defendingTeam.takeDamage(damage);
     }
 

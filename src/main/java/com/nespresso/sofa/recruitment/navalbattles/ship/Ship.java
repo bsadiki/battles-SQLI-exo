@@ -8,13 +8,14 @@ public class Ship {
     private Hull hull;
     private List<Mast> masts;
     List<Canon> cannons;
-    private Double t;
+    private Double hitPoints;
     public Ship(int displacement, int mast) {
         this.hull = new Hull(displacement);
         this.masts = new ArrayList<>();
         for (int i = 0; i < mast; i++)
             this.masts.add(new Mast());
         this.cannons = new ArrayList<>();
+        calculateHitPoints();
     }
 
 
@@ -26,6 +27,7 @@ public class Ship {
         this.cannons = new ArrayList<>();
         for (int i = 0; i < cannons; i++)
             this.cannons.add(new Canon());
+        calculateHitPoints();
     }
 
     double speed() {
@@ -49,7 +51,7 @@ public class Ship {
             damage = canonsTakeDamage(damage);
         if (damage > 0)
             damage = hullTakeDamage(damage);
-        hitPoints();
+        calculateHitPoints();
         return damage;
     }
 
@@ -80,10 +82,10 @@ public class Ship {
     }
 
     public boolean sank() {
-        return (this.hitPoints() <= 0);
+        return (this.hitPoints <= 0);
     }
 
-    private double hitPoints() {
+    private void calculateHitPoints() {
         double hullHitPoints = this.hull.hitPoints();
         double mastHitPoints = 0;
         for (Mast mast : this.masts) {
@@ -93,8 +95,7 @@ public class Ship {
         for (Canon canon : this.cannons) {
             cannonsHitPoints += canon.hitPoints();
         }
-        t = hullHitPoints + mastHitPoints + cannonsHitPoints;
-        return t;
+        this.hitPoints = hullHitPoints + mastHitPoints + cannonsHitPoints;
     }
 
 }
